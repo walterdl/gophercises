@@ -3,7 +3,9 @@ package main
 import (
 	"bufio"
 	"log"
+	"math/rand"
 	"os"
+	"strings"
 )
 
 type questionResult struct {
@@ -18,7 +20,11 @@ func init() {
 	scanner = bufio.NewScanner(os.Stdin)
 }
 
-func askAll(qa []question, c chan questionResult) {
+func askAll(qa []question, shuffle bool, c chan questionResult) {
+	if shuffle {
+		shuffleQuestions(&qa)
+	}
+
 	for i, q := range qa {
 		result := questionResult{}
 		isCorrect, err := ask(q)
@@ -35,6 +41,12 @@ func askAll(qa []question, c chan questionResult) {
 	}
 }
 
+func shuffleQuestions(qa *[]question) {
+	rand.Shuffle(len(*qa), func(i, j int) {
+		(*qa)[i], (*qa)[j] = (*qa)[j], (*qa)[i]
+	})
+}
+
 func ask(q question) (bool, error) {
 	log.Println(q.problem, "?")
 	scanner.Scan()
@@ -44,5 +56,9 @@ func ask(q question) (bool, error) {
 		return false, err
 	}
 
-	return scanner.Text() == q.answer, nil
+	return clearAnswer(scanner.Text()) == clearAnswer(q.answer), nil
+}
+
+func clearAnswer(a string) string {
+	return strings.ToLower(strings.TrimSpace(a))
 }

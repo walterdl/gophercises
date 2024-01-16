@@ -35,7 +35,7 @@ func run() error {
 	totalCorrect := 0
 	start := time.Now()
 
-	go askAll(qs, qResultChan)
+	go askAll(qs, opts.shuffle, qResultChan)
 	go wait(opts.limit, timeLimitChan)
 
 Loop:
