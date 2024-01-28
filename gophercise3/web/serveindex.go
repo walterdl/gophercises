@@ -1,4 +1,4 @@
-package main
+package web
 
 import (
 	"net/http"
@@ -30,7 +30,7 @@ func indexPage(rw http.ResponseWriter, r *http.Request) {
 }
 
 func renderArc(arc story.Arc, rw http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("static/index.html")
+	t, err := template.ParseFS(staticFolder, "static/index.html")
 	if err != nil {
 		http.Error(rw, "Error parsing template", http.StatusInternalServerError)
 		return

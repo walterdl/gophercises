@@ -2,12 +2,11 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
-	"net/http"
 
 	"github.com/walterdl/gophercises3/storage"
 	"github.com/walterdl/gophercises3/story"
+	"github.com/walterdl/gophercises3/web"
 )
 
 type options struct {
@@ -23,7 +22,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	startServer(opts.port)
+	web.Server(opts.port)
 }
 
 func initStorage(opts options) error {
@@ -34,15 +33,6 @@ func initStorage(opts options) error {
 
 	story.SetStory(s)
 	return nil
-}
-
-func startServer(port int) {
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	http.HandleFunc("/", serveIndex)
-
-	address := fmt.Sprintf("localhost:%d", port)
-	log.Printf("Listening on %s\n", address)
-	http.ListenAndServe(address, nil)
 }
 
 func parseCliOptions() options {
