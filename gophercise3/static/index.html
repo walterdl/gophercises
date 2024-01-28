@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="static/normalize.css">
+  <title>Gophercise 3 Story</title>
+</head>
+<body>
+  <form action="/" method="POST">
+    <h1>{{.Title}}</h1>
+    {{range .Story}} <p>{{.}}</p> {{end}}
+    <ul>
+      {{range .Options}}
+        <li>
+          <button type="submit" name="arc" value="{{.Arc}}">
+            {{.Text}}
+          </button>
+        </li>
+      {{end}}
+    </ul>
+  </form>
+</body>
+</html>
